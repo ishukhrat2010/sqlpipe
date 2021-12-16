@@ -1,4 +1,3 @@
-from functools import total_ordering
 from ddlsyntax import *
 
 # Token types
