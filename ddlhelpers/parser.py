@@ -1,4 +1,4 @@
-from ddlsyntax import *
+from . ddlsyntax import *
 
 # Token types
 TT_PLAIN = 'TT_PLAIN'    # any word, either reserved or not
@@ -159,9 +159,9 @@ class FileProcessor:
                 f.close()
 
 
-class ddlObject:
-    def __init__(self, sqlText=''):
-        self._sqlText = sqlText
+# class ddlObject:
+#     def __init__(self, sqlText=''):
+#         self._sqlText = sqlText
 
 
 # -------------------------------------------

@@ -7,7 +7,8 @@ fName = '/Users/shawn.ismailov/Documents/projects/dbl-bigdata/BigData/SQL_Redshi
 
 def do_test():
     sql_test = SQLObject()
-    sql_test.name = ''
+    sql_test.name = 'unknown'
+    print('test_parser.do_test()')
 
 
 do_test()

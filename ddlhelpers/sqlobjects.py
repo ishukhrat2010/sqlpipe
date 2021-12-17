@@ -2,7 +2,6 @@
 class SQLObject:
 
     def __init__(self):
-        self.name = ''
         self.__objname__ = ''
 
     @property
