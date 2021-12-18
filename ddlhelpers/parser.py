@@ -162,8 +162,41 @@ class Tokenizer(SyntaxRules):
                 token, includeTokenType)]
         return new_list
 
-    def split_tokens(self, tkey, tvalue):
+    def split_tokens(self, tkey, tvalue, includeSplitter=False):
         result = []
+        indexList = [self._tokens.index(x)
+                     for x in self._tokens if x[tkey] == tvalue]
+
+        # print(indexList)
+        i2 = 0
+        startIdx = 0
+        endIdx = 0
+        tCount = len(self._tokens)
+
+        #print(f'Total tokens: {tCount}')
+        while startIdx+1 <= tCount:
+
+            if i2+1 <= len(indexList):
+                endIdx = indexList[i2]
+            else:
+                endIdx = tCount+1
+
+            if startIdx >= endIdx:
+                #print(startIdx, endIdx, 'break condition triggered')
+                break
+
+            if includeSplitter == True:
+                endIdx += 1
+            #print(startIdx, endIdx)
+            temp_list = self._tokens[startIdx:endIdx]
+            if len(temp_list) > 0:
+                result.append([x.copy() for x in temp_list])
+
+            # -----
+            startIdx = endIdx
+            if includeSplitter == False:
+                startIdx += 1
+            i2 += 1
 
         # ----------
         return result
@@ -202,6 +235,14 @@ if __name__ == "__main__":
     fp = FileProcessor(fName, ';')
     if fp._tokenizer._tokens != None:
         clear_tokens = fp._tokenizer.copy_tokens([], [TT_COMMENT])
+        fp._tokenizer._tokens = clear_tokens
 
-        for x in clear_tokens:
+        for x in fp._tokenizer._tokens:
             print(x)
+
+        myblocks = fp._tokenizer.split_tokens(
+            'TokenType', TT_END_OF_STATEMENT)
+        for xx in myblocks:
+            print('----------------------------------')
+            for y in xx:
+                print(y['Value'])
