@@ -34,7 +34,7 @@ class BaseDelimiters:
         self._delim_collection[DL_DOUBLE_QUOTE] = '"'
         self._delim_collection[DL_COMMA] = ','
         self._delim_collection[DL_COLON] = ':'
-        self._delim_collection[DL_SEMICOLON] = ':'
+        self._delim_collection[DL_SEMICOLON] = ';'
         self._delim_collection[DL_PARENTHESIS_OPEN] = '('
         self._delim_collection[DL_PARENTHESIS_CLOSE] = ')'
         self._delim_collection[DL_CURLY_BRACE_OPEN] = '{'

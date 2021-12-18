@@ -1,10 +1,11 @@
-from . ddlsyntax import *
+from ddlsyntax import *
 
 # Token types
-TT_PLAIN = 'TT_PLAIN'    # any word, either reserved or not
+TT_PLAIN = 'TT_PLAIN'             # any word, either reserved or not
 TT_SINGLE_QUOTED = 'TT_S_QUOTED'  # a token between single quotes
 TT_DOUBLE_QUOTED = 'TT_D_QUOTED'  # a token between double quotes
-TT_COMMENT = 'TT_COMMENT'  # a token between comment sign and end of line
+TT_COMMENT = 'TT_COMMENT'         # a token between comment sign and end of line
+TT_END_OF_STATEMENT = 'TT_EOS'    # token is the standard sql stament terminator
 
 
 def clean_spaces(strValue):
@@ -112,7 +113,11 @@ class Tokenizer(SyntaxRules):
                         expectedDelims = None
 
                 if dl_data['exclude'] == False:
-                    yield(_token(dl, line_no, oldPos, curTokenType))
+                    if (dl == self._delim_collection[DL_SEMICOLON]) and (curTokenType == TT_PLAIN):
+                        ctt = TT_END_OF_STATEMENT
+                    else:
+                        ctt = curTokenType
+                    yield(_token(dl, line_no, oldPos, ctt))
                 chr_ofs += dl_data['length']
 
                 if (dl == self._delim_collection[DL_NEWLINE]) and (curTokenType in [TT_PLAIN, TT_COMMENT]):
@@ -140,6 +145,22 @@ class Tokenizer(SyntaxRules):
 
         if str_accumulator != '':
             yield _token(str_accumulator, line_no, oldPos, curTokenType)
+
+    def copy_tokens(self, includeTokenType: list = [], excludeTokenType: list = []):
+
+        def isListed(aToken, TokenList) -> bool:
+            result = aToken['TokenType'] in TokenList
+            return result
+        if len(excludeTokenType) == 0:
+            new_list = self._tokens.copy()
+        else:
+            new_list = [token for token in self._tokens if not isListed(
+                token, excludeTokenType)]
+
+        if len(includeTokenType) != 0:
+            new_list = [token for token in self._tokens if isListed(
+                token, includeTokenType)]
+        return new_list
 
 
 class FileProcessor:
@@ -174,5 +195,6 @@ if __name__ == "__main__":
     fName = '/Users/shawn.ismailov/Documents/projects/python-courses/sqlpipe/ddlhelpers/test_fp.txt'
     fp = FileProcessor(fName, ';')
     if fp._tokenizer._tokens != None:
-        for x in fp._tokenizer._tokens:
+        clear_tokens = fp._tokenizer.copy_tokens([], [TT_COMMENT])
+        for x in clear_tokens:
             print(x)
