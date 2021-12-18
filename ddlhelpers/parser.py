@@ -152,15 +152,21 @@ class Tokenizer(SyntaxRules):
             result = aToken['TokenType'] in TokenList
             return result
         if len(excludeTokenType) == 0:
-            new_list = self._tokens.copy()
+            new_list = [token.copy() for token in self._tokens]
         else:
-            new_list = [token for token in self._tokens if not isListed(
+            new_list = [token.copy() for token in self._tokens if not isListed(
                 token, excludeTokenType)]
 
         if len(includeTokenType) != 0:
-            new_list = [token for token in self._tokens if isListed(
+            new_list = [token.copy() for token in self._tokens if isListed(
                 token, includeTokenType)]
         return new_list
+
+    def split_tokens(self, tkey, tvalue):
+        result = []
+
+        # ----------
+        return result
 
 
 class FileProcessor:
@@ -196,5 +202,6 @@ if __name__ == "__main__":
     fp = FileProcessor(fName, ';')
     if fp._tokenizer._tokens != None:
         clear_tokens = fp._tokenizer.copy_tokens([], [TT_COMMENT])
+
         for x in clear_tokens:
             print(x)
