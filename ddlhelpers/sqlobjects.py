@@ -12,7 +12,7 @@ class SQLObject:
     @staticmethod
     def from_tokens(aTokens):
         myClass = SQLObjectFabric.create_sql_object(aTokens)
-        return myClass.init_from_tokens(myClass, aTokens)
+        return myClass.init_from_tokens(aTokens)
 
     @classmethod
     def is_ddl_tokens(cls, aTokens):
@@ -52,9 +52,6 @@ class SQLSchema(SQLObject):
 
 class SQLTable(SQLObject):
 
-    def __init__(self):
-        SQLObject(self).__init__()
-
     @property
     def object_type(self):
         return 'table'
@@ -62,6 +59,9 @@ class SQLTable(SQLObject):
     @classmethod
     def init_from_tokens(cls, aTokens):
         return cls()
+
+    def __repr__(self):
+        return "SQL Table"
 
 
 class SQLView(SQLObject):
@@ -110,10 +110,13 @@ class SQLObjectFabric():
                 elif curToken == 'STORED' and nextToken == 'PROCEDURE':
                     result = SQLStoredProc
 
+                if result != None:
+                    break
+
             return result
 
         verb = str(aTokens[0]['Value']).upper()
-        objectClass = identify_class(aTokens)
+        objectClass = identify_class()
         if objectClass != None:
             objectClass.__verb__ = verb
             return objectClass
