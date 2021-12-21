@@ -1,4 +1,6 @@
-from ddlsyntax import *
+from ddlhelpers.ddlsyntax import *
+from ddlhelpers.sqlobjects import *
+
 
 # Token types
 TT_PLAIN = 'TT_PLAIN'             # any word, either reserved or not
@@ -244,5 +246,8 @@ if __name__ == "__main__":
             'TokenType', TT_END_OF_STATEMENT)
         for xx in myblocks:
             print('----------------------------------')
-            for y in xx:
-                print(y['Value'])
+            if str(xx[0]['Value']).upper() == 'CREATE' and str(xx[1]['Value']).upper() == 'TABLE':
+                myObj = SQLObject.from_tokens(xx)
+            else:
+                for y in xx:
+                    print(y['Value'])
