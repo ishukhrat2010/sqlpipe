@@ -9,13 +9,13 @@ TT_DOUBLE_QUOTED = 'TT_D_QUOTED'  # a token between double quotes
 TT_COMMENT = 'TT_COMMENT'         # a token between comment sign and end of line
 TT_END_OF_STATEMENT = 'TT_EOS'    # token is the standard sql stament terminator
 
-
+# this function replaces \t \r with space in the string
 def clean_spaces(strValue):
     aValue = str(strValue).replace('\t', ' ')
     aValue = str(aValue).replace('\r', ' ')
     return aValue
 
-
+# This class converts a text to a list of tokens
 class Tokenizer(SyntaxRules):
 
     def __init__(self, content=''):
@@ -23,6 +23,7 @@ class Tokenizer(SyntaxRules):
         self._tokens = None
         self._content = content
 
+    # Searches for delimiters and returns the index of the leftmost delimiter
     def _contains_delimiter(self, aLine, expectedDelims=None):
         idx = -1
         delim = None
@@ -47,21 +48,26 @@ class Tokenizer(SyntaxRules):
 
         return (idx, delim, delim_data)
 
+    # actually returns list of tokens, calls iterator function
     def tokenize(self, _debug=False):
         self._tokens = list(self.gen_token(str(self._content)))
 
+    # iterator function, produces next token from the content
     def gen_token(self, strValue):
         max_buf = self._max_delim_size()
 
+        # returns token definition
         def _token(tValue, tLine, tPos, tokenType=TT_PLAIN):
             return {"Value": tValue,  "Line": tLine, "Pos": tPos, "TokenType": tokenType}
 
+        # returns delimiter definition
         def single_delim_definition(aDelim, aExclude=False):
             result = {}
             sd = self._delim_collection[aDelim]
             result[sd] = {'length': len(sd), 'exclude': aExclude}
             return result
 
+        # core of the tokenizer
         line_ofs = 0  # current line's offset in the input. E.g. line 1 has offset 0, line 3 offset 87
         chr_ofs = 0  # character's offset in the current line
         abs_ofs = 0  # abs_ofs = line_ofs + chr_ofs ; absolute offset in input
