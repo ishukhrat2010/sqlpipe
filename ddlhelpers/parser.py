@@ -15,7 +15,7 @@ def clean_spaces(strValue):
     aValue = str(aValue).replace('\r', ' ')
     return aValue
 
-# This class converts a text to a list of tokens
+# This class converts a text to a list of basic tokens
 class Tokenizer(SyntaxRules):
 
     def __init__(self, content=''):
@@ -210,6 +210,7 @@ class Tokenizer(SyntaxRules):
         return result
 
 
+# This class reads the file and tokenizes it
 class FileProcessor:
     def __init__(self, filename, object_delimiter):
         self.filename = filename
