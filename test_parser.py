@@ -7,6 +7,7 @@ fName = '/Users/shawn.ismailov/Documents/projects/dbl-bigdata/BigData/SQL_Redshi
 
 def do_test():
     #fName = '/Users/shawn.ismailov/Documents/projects/dbl-bigdata/BigData/SQL_Redshift/deepThought/DDL/table/gold/dim_district_dates.sql'
+    #testing commit
     fName = '/Users/shawn.ismailov/Documents/projects/python-courses/sqlpipe/ddlhelpers/test_fp.txt'
     fp = FileProcessor(fName, ';')
     if fp._tokenizer._tokens != None:
