@@ -16,7 +16,7 @@ def clean_spaces(strValue):
     return aValue
 
 # This class converts a text to a list of basic tokens
-class Tokenizer(SyntaxRules):
+class BaseTokenizer(SyntaxRules):
 
     def __init__(self, content=''):
         SyntaxRules.__init__(self)
@@ -47,10 +47,6 @@ class Tokenizer(SyntaxRules):
                     delim_data = searchDelims[dl]
 
         return (idx, delim, delim_data)
-
-    # actually returns list of tokens, calls iterator function
-    def tokenize(self, _debug=False):
-        self._tokens = list(self.gen_token(str(self._content)))
 
     # iterator function, produces next token from the content
     def gen_token(self, strValue):
@@ -209,6 +205,20 @@ class Tokenizer(SyntaxRules):
         # ----------
         return result
 
+class TokenChain:
+
+    def __init__(self, tokens: list):
+        self._tokens=[]
+
+
+class Tokenizer(BaseTokenizer):
+
+    def __init__(self, content=''):
+        BaseTokenizer.__init__(self, content)
+
+    # returns list of tokens, calls iterator function
+    def tokenize(self, _debug=False):
+        self._tokens = list(self.gen_token(str(self._content)))
 
 # This class reads the file and tokenizes it
 class FileProcessor:
