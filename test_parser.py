@@ -12,9 +12,9 @@ def do_test():
     fp = FileProcessor(fName, ';')
     if fp._tokenizer._tokens != None:
         clear_tokens = fp._tokenizer.copy_tokens([], [TT_COMMENT])
-        fp._tokenizer._tokens = clear_tokens
+        fp._tokenizer._tokens.load_tokens( clear_tokens)
 
-        for x in fp._tokenizer._tokens:
+        for x in fp._tokenizer.copy_tokens():
             print(x)
 
         myblocks = fp._tokenizer.split_tokens(
