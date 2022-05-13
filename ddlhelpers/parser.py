@@ -150,11 +150,18 @@ class BaseTokenizer(SyntaxRules):
         if str_accumulator != '':
             yield _token(str_accumulator, line_no, oldPos, curTokenType)
 
+
+class TokenChain:
+
+    def __init__(self, tokens: list):
+        self._tokens=[]
+
     def copy_tokens(self, includeTokenType: list = [], excludeTokenType: list = []):
 
         def isListed(aToken, TokenList) -> bool:
             result = aToken['TokenType'] in TokenList
             return result
+            
         if len(excludeTokenType) == 0:
             new_list = [token.copy() for token in self._tokens]
         else:
@@ -205,12 +212,6 @@ class BaseTokenizer(SyntaxRules):
         # ----------
         return result
 
-class TokenChain:
-
-    def __init__(self, tokens: list):
-        self._tokens=[]
-
-
 class Tokenizer(BaseTokenizer):
 
     def __init__(self, content=''):
@@ -219,6 +220,62 @@ class Tokenizer(BaseTokenizer):
     # returns list of tokens, calls iterator function
     def tokenize(self, _debug=False):
         self._tokens = list(self.gen_token(str(self._content)))
+
+    def copy_tokens(self, includeTokenType: list = [], excludeTokenType: list = []):
+
+        def isListed(aToken, TokenList) -> bool:
+            result = aToken['TokenType'] in TokenList
+            return result
+            
+        if len(excludeTokenType) == 0:
+            new_list = [token.copy() for token in self._tokens]
+        else:
+            new_list = [token.copy() for token in self._tokens if not isListed(
+                token, excludeTokenType)]
+
+        if len(includeTokenType) != 0:
+            new_list = [token.copy() for token in self._tokens if isListed(
+                token, includeTokenType)]
+        return new_list
+
+    def split_tokens(self, tkey, tvalue, includeSplitter=False):
+        result = []
+        indexList = [self._tokens.index(x)
+                     for x in self._tokens if x[tkey] == tvalue]
+
+        # print(indexList)
+        i2 = 0
+        startIdx = 0
+        endIdx = 0
+        tCount = len(self._tokens)
+
+        #print(f'Total tokens: {tCount}')
+        while startIdx+1 <= tCount:
+
+            if i2+1 <= len(indexList):
+                endIdx = indexList[i2]
+            else:
+                endIdx = tCount+1
+
+            if startIdx >= endIdx:
+                #print(startIdx, endIdx, 'break condition triggered')
+                break
+
+            if includeSplitter == True:
+                endIdx += 1
+            #print(startIdx, endIdx)
+            temp_list = self._tokens[startIdx:endIdx]
+            if len(temp_list) > 0:
+                result.append([x.copy() for x in temp_list])
+
+            # -----
+            startIdx = endIdx
+            if includeSplitter == False:
+                startIdx += 1
+            i2 += 1
+
+        # ----------
+        return result
 
 # This class reads the file and tokenizes it
 class FileProcessor:
