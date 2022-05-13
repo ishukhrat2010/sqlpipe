@@ -15,9 +15,35 @@ def clean_spaces(strValue):
     aValue = str(aValue).replace('\r', ' ')
     return aValue
 
+
 # returns token definition
 def _token(tValue, tLine, tPos, tokenType=TT_PLAIN):
     return {"Value": tValue,  "Line": tLine, "Pos": tPos, "TokenType": tokenType}
+
+class BaseToken:
+
+    def __init__(self, tokenValue:string, tokenType, lineNumber:int=0, position:int=0):
+        self._value = tokenValue
+        self._type  = tokenType
+        self._line  = lineNumber
+        self._pos   = position
+
+    @property
+    def value(self):
+        return self._value
+    
+    @property
+    def type(self):
+        return self._type
+
+    @property
+    def line(self):
+        return self._line
+    
+    @property
+    def position(self):
+        return self._pos
+
 
 # This class converts a text to a list of basic tokens
 class BaseTokenizer(SyntaxRules):
