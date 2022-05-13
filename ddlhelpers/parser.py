@@ -15,6 +15,10 @@ def clean_spaces(strValue):
     aValue = str(aValue).replace('\r', ' ')
     return aValue
 
+# returns token definition
+def _token(tValue, tLine, tPos, tokenType=TT_PLAIN):
+    return {"Value": tValue,  "Line": tLine, "Pos": tPos, "TokenType": tokenType}
+
 # This class converts a text to a list of basic tokens
 class BaseTokenizer(SyntaxRules):
 
@@ -51,10 +55,6 @@ class BaseTokenizer(SyntaxRules):
     # iterator function, produces next token from the content
     def gen_token(self, strValue):
         max_buf = self._max_delim_size()
-
-        # returns token definition
-        def _token(tValue, tLine, tPos, tokenType=TT_PLAIN):
-            return {"Value": tValue,  "Line": tLine, "Pos": tPos, "TokenType": tokenType}
 
         # returns delimiter definition
         def single_delim_definition(aDelim, aExclude=False):
