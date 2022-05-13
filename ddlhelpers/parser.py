@@ -16,13 +16,9 @@ def clean_spaces(strValue):
     return aValue
 
 
-# returns token definition
-def _token(tValue, tLine, tPos, tokenType=TT_PLAIN):
-    return {"Value": tValue,  "Line": tLine, "Pos": tPos, "TokenType": tokenType}
-
 class BaseToken:
 
-    def __init__(self, tokenValue:string, tokenType, lineNumber:int=0, position:int=0):
+    def __init__(self, tokenValue:str, tokenType, lineNumber:int=0, position:int=0):
         self._value = tokenValue
         self._type  = tokenType
         self._line  = lineNumber
@@ -43,6 +39,12 @@ class BaseToken:
     @property
     def position(self):
         return self._pos
+
+
+# returns token definition
+def _token(tValue, tLine, tPos, tokenType=TT_PLAIN):
+    #return {"Value": tValue,  "Line": tLine, "Pos": tPos, "TokenType": tokenType}
+    return BaseToken(tokenValue=tValue, tokenType=tokenType, lineNumber=tLine, position=tPos)
 
 
 # This class converts a text to a list of basic tokens
