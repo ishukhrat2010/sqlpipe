@@ -1,5 +1,5 @@
 from ddlhelpers.ddlsyntax import *
-import sqlobjects
+import ddlhelpers.sqlobjects
 
 
 # Token types
