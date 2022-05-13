@@ -1,5 +1,5 @@
 from ddlhelpers.ddlsyntax import *
-from ddlhelpers.sqlobjects import *
+import sqlobjects
 
 
 # Token types
@@ -24,7 +24,13 @@ class BaseToken:
         self._line  = lineNumber
         self._pos   = position
     
-    def copy(self,copyLinePos:bool=False):
+    def __str__(self):
+        return f'("{self._value}", Type: {self._type}, L/P: {self._line}/{self._pos})'
+
+    def __repr__(self):
+        return self.__str__()
+
+    def copy(self,copyLinePos:bool=True):
         return BaseToken(self.value, self.type, self.line if copyLinePos else 0, self.position if copyLinePos else 0)
 
     def propertyByName(self, propName:str):
