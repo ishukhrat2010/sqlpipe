@@ -16,7 +16,7 @@ class SQLObject:
 
     @classmethod
     def is_ddl_tokens(cls, aTokens):
-        return(str(aTokens[0]['Value']).upper() in cls.ddl_reserved_words())
+        return(str(aTokens[0].value).upper() in cls.ddl_reserved_words())
 
     @classmethod
     def parse_tokens(cls, aTokens):
@@ -90,8 +90,8 @@ class SQLObjectFabric():
             tokenList = aTokens[1:]
             for t in tokenList:
                 idx = tokenList.index(t)
-                curToken = str(t['Value']).upper()
-                nextToken = str(tokenList[idx+1]['Value']).upper()
+                curToken = str(t.value).upper()
+                nextToken = str(tokenList[idx+1].value).upper()
                 if curToken == 'SCHEMA':
                     result = SQLSchema
 
@@ -115,7 +115,7 @@ class SQLObjectFabric():
 
             return result
 
-        verb = str(aTokens[0]['Value']).upper()
+        verb = str(aTokens[0].value).upper()
         objectClass = identify_class()
         if objectClass != None:
             objectClass.__verb__ = verb

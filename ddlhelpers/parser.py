@@ -23,6 +23,25 @@ class BaseToken:
         self._type  = tokenType
         self._line  = lineNumber
         self._pos   = position
+    
+    def copy(self,copyLinePos:bool=False):
+        return BaseToken(self.value, self.type, self.line if copyLinePos else 0, self.position if copyLinePos else 0)
+
+    def propertyByName(self, propName:str):
+        result = None
+        if propName == 'value':
+            result = self.value
+
+        elif propName == 'type':
+            result = self.type
+
+        elif propName == 'line':
+            result = self.line
+
+        elif propName == 'position':
+            result = self.position
+        return result
+
 
     @property
     def value(self):
@@ -190,7 +209,8 @@ class TokenChain:
     def copy_tokens(self, includeTokenType: list = [], excludeTokenType: list = []):
 
         def isListed(aToken, TokenList) -> bool:
-            result = aToken['TokenType'] in TokenList
+            # result = aToken['TokenType'] in TokenList
+            result = aToken.type in TokenList
             return result
             
         if len(excludeTokenType) == 0:
@@ -207,7 +227,7 @@ class TokenChain:
     def split_tokens(self, tkey, tvalue, includeSplitter=False):
         result = []
         indexList = [self._tokens.index(x)
-                     for x in self._tokens if x[tkey] == tvalue]
+                     for x in self._tokens if x.propertyByName(tkey) == tvalue]
 
         # print(indexList)
         i2 = 0
@@ -301,7 +321,7 @@ if __name__ == "__main__":
             print(x)
 
         myblocks = fp._tokenizer.split_tokens(
-            'TokenType', TT_END_OF_STATEMENT)
+            'type', TT_END_OF_STATEMENT)
         for xx in myblocks:
             print('----------------------------------')
             if str(xx[0]['Value']).upper() == 'CREATE' and str(xx[1]['Value']).upper() == 'TABLE':
