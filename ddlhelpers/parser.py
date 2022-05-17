@@ -212,9 +212,13 @@ class TokenChain:
     def items(self):
         return self._tokens
 
+    # Clears internal list of tokens
     def clear(self):
         self._tokens.clear()
 
+    # Copies chain of tokens
+    #   includeTokenType - token types to include in the result, all included if empty
+    #   excludeTokenType - token types to exclude from the result, none excluded if empty
     def copy(self, includeTokenType: list = [], excludeTokenType: list = []):
 
         def isListed(aToken, TokenList) -> bool:
@@ -233,15 +237,20 @@ class TokenChain:
                 token, includeTokenType)]
         return new_list
 
+    # Load chain from a list of tokens
     def load(self, tokens):
         self._tokens.clear()
         if self.validate_token_list(tokens):
             self._tokens = tokens.copy()
 
-    def split(self, tkey, tvalue, includeSplitter=False):
+    # Split chain into few chains
+    #   tKey   - name of the token property to use as a delimiter
+    #   tValue - value of the token property to use as a delimiter
+    #   includeSplitter - include splitter into result
+    def split(self, tKey, tvalue, includeSplitter=False):
         result = []
         indexList = [self._tokens.index(x)
-                     for x in self._tokens if x.propertyByName(tkey) == tvalue]
+                     for x in self._tokens if x.propertyByName(tKey) == tvalue]
 
         # print(indexList)
         i2 = 0
