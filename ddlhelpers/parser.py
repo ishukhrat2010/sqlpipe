@@ -235,7 +235,9 @@ class TokenChain:
         if len(includeTokenType) != 0:
             new_list = [token.copy() for token in self._tokens if isListed(
                 token, includeTokenType)]
-        return new_list
+
+        new_chain = TokenChain(new_list)
+        return new_chain
 
     # Load chain from a list of tokens
     def load(self, tokens):
@@ -275,7 +277,8 @@ class TokenChain:
             #print(startIdx, endIdx)
             temp_list = self._tokens[startIdx:endIdx]
             if len(temp_list) > 0:
-                result.append([x.copy() for x in temp_list])
+                new_chain = TokenChain([x.copy() for x in temp_list])
+                result.append(new_chain)
 
             # -----
             startIdx = endIdx
@@ -308,23 +311,23 @@ class Tokenizer(BaseTokenizer):
 
     def __init__(self, content=''):
         BaseTokenizer.__init__(self, content)
-        self._tokens = TokenChain()
+        self._tokenchain = TokenChain()
+        self.tokenize()
 
-    # returns list of tokens, calls iterator function
-    def tokenize(self, _debug=False):
-        self._tokens.load(list(self.gen_token(str(self._content))))
+    # converts text into list of tokens
+    def tokenize(self):
+        self._tokenchain.load(list(self.gen_token(str(self._content))))
 
     def copy_tokens(self, includeTokenType: list = [], excludeTokenType: list = []):
-        token_list = self._tokens.copy(includeTokenType, excludeTokenType)
-        new_chain = TokenChain(token_list)
+        new_chain = self._tokenchain.copy(includeTokenType, excludeTokenType)         
         return new_chain
 
     def split_tokens(self, tkey, tvalue, includeSplitter=False):
-        return self._tokens.split(tkey, tvalue, includeSplitter)
+        return self._tokenchain.split(tkey, tvalue, includeSplitter)
 
     @property
     def token_chain(self):
-        return self._tokens
+        return self._tokenchain
 
 
 # This class reads the file and tokenizes it
