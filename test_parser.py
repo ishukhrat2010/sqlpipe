@@ -10,25 +10,24 @@ def do_test():
     #testing commit
     fName = '/Users/shawn.ismailov/Documents/projects/python-courses/sqlpipe/ddlhelpers/test_fp.txt'
     fp = FileProcessor(fName, ';')
-    if fp._tokenizer._tokens != None:
-        clear_tokens = fp._tokenizer.copy([], [TT_COMMENT])
-        fp._tokenizer._tokenchain.load( clear_tokens)
 
-        for x in fp._tokenizer.copy():
-            print(x)
+    #fp._tokenizer._tokenchain.load( clear_tokens)
 
-        myblocks = fp._tokenizer.split_tokens(
-            'type', TT_END_OF_STATEMENT)
-        for xx in myblocks:
-            print('----------------------------------')
-            if str(xx[0].value).upper() == 'CREATE' and str(xx[1].value).upper() == 'TABLE':
-                myObj = SQLObject.from_tokens(xx)
-                print(type(myObj))
-                for y in xx:
-                    print(y.value)
-            else:
-                for y in xx:
-                    print(y.value)
+    for x in fp._tokenizer.token_chain.items:
+        print(x)
+
+    myblocks = fp._tokenizer.split_tokens(
+        'type', TT_END_OF_STATEMENT)
+    for xx in myblocks:
+        print('----------------------------------')
+        if str(xx[0].value).upper() == 'CREATE' and str(xx[1].value).upper() == 'TABLE':
+            myObj = SQLObject.from_tokens(xx)
+            print(type(myObj))
+            for y in xx:
+                print(y.value)
+        else:
+            for y in xx:
+                print(y.value)
 
 
 if __name__ == "__main__":
