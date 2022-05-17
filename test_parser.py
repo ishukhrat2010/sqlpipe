@@ -11,10 +11,10 @@ def do_test():
     fName = '/Users/shawn.ismailov/Documents/projects/python-courses/sqlpipe/ddlhelpers/test_fp.txt'
     fp = FileProcessor(fName, ';')
     if fp._tokenizer._tokens != None:
-        clear_tokens = fp._tokenizer.copy_tokens([], [TT_COMMENT])
-        fp._tokenizer._tokens.load_tokens( clear_tokens)
+        clear_tokens = fp._tokenizer.copy([], [TT_COMMENT])
+        fp._tokenizer._tokenchain.load( clear_tokens)
 
-        for x in fp._tokenizer.copy_tokens():
+        for x in fp._tokenizer.copy():
             print(x)
 
         myblocks = fp._tokenizer.split_tokens(
