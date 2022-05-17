@@ -208,11 +208,14 @@ class TokenChain:
     def __init__(self, tokens: list=[]):
         self._tokens= tokens
     
-    def load_tokens(self, tokens):
-        self._tokens.clear()
-        self._tokens = tokens.copy()
+    @property
+    def items(self):
+        return self._tokens
 
-    def copy_tokens(self, includeTokenType: list = [], excludeTokenType: list = []):
+    def clear(self):
+        self._tokens.clear()
+
+    def copy(self, includeTokenType: list = [], excludeTokenType: list = []):
 
         def isListed(aToken, TokenList) -> bool:
             # result = aToken['TokenType'] in TokenList
@@ -230,7 +233,12 @@ class TokenChain:
                 token, includeTokenType)]
         return new_list
 
-    def split_tokens(self, tkey, tvalue, includeSplitter=False):
+    def load(self, tokens):
+        self._tokens.clear()
+        if self.validate_token_list(tokens):
+            self._tokens = tokens.copy()
+
+    def split(self, tkey, tvalue, includeSplitter=False):
         result = []
         indexList = [self._tokens.index(x)
                      for x in self._tokens if x.propertyByName(tkey) == tvalue]
@@ -269,6 +277,24 @@ class TokenChain:
         # ----------
         return result
 
+    def validate_token_list(token_list):
+        boolres = True
+        def exp():
+            raise Exception('List of tokens is expected')
+
+        if type(token_list)!=type(list):
+            boolres = False
+        
+        if boolres==True:
+            for x in token_list:
+                if type(x)!=type(BaseToken):
+                    boolres = False
+                    break
+
+        if boolres!=True:
+            exp()
+        return boolres
+
 class Tokenizer(BaseTokenizer):
 
     def __init__(self, content=''):
@@ -277,14 +303,19 @@ class Tokenizer(BaseTokenizer):
 
     # returns list of tokens, calls iterator function
     def tokenize(self, _debug=False):
-        self._tokens.load_tokens(list(self.gen_token(str(self._content))))
+        self._tokens.load(list(self.gen_token(str(self._content))))
 
     def copy_tokens(self, includeTokenType: list = [], excludeTokenType: list = []):
-
-        return self._tokens.copy_tokens(includeTokenType, excludeTokenType)
+        token_list = self._tokens.copy(includeTokenType, excludeTokenType)
+        new_chain = TokenChain(token_list)
+        return new_chain
 
     def split_tokens(self, tkey, tvalue, includeSplitter=False):
-        return self._tokens.split_tokens(tkey, tvalue, includeSplitter)
+        return self._tokens.split(tkey, tvalue, includeSplitter)
+
+    @property
+    def token_chain(self):
+        return self._tokens
 
 
 # This class reads the file and tokenizes it
