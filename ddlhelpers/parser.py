@@ -294,7 +294,7 @@ class TokenChain:
         def exp():
             raise Exception('List of tokens is expected')
 
-        if type(token_list)!=type(list):
+        if type(token_list)!=type([]):
             boolres = False
         
         if boolres==True:
