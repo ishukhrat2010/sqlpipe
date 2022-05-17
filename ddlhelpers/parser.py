@@ -316,7 +316,8 @@ class Tokenizer(BaseTokenizer):
 
     # converts text into list of tokens
     def tokenize(self):
-        self._tokenchain.load(list(self.gen_token(str(self._content))))
+        if str(self._content).strip()!='':
+            self._tokenchain.load(list(self.gen_token(str(self._content))))
 
     def copy_tokens(self, includeTokenType: list = [], excludeTokenType: list = []):
         new_chain = self._tokenchain.copy(includeTokenType, excludeTokenType)         
