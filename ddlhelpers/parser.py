@@ -289,7 +289,7 @@ class TokenChain:
         # ----------
         return result
 
-    def validate_token_list(token_list):
+    def validate_token_list(self, token_list):
         boolres = True
         def exp():
             raise Exception('List of tokens is expected')
