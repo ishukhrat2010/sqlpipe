@@ -291,20 +291,14 @@ class TokenChain:
 
     def validate_token_list(self, token_list):
         boolres = True
-        def exp():
-            raise Exception('List of tokens is expected')
 
-        if type(token_list)!=type([]):
-            boolres = False
-        
-        if boolres==True:
-            for x in token_list:
-                if type(x)!=type(BaseToken):
-                    boolres = False
-                    break
+        if type(token_list)!=type([]) \
+        or not any(isinstance(x, BaseToken) for x in token_list):
+                boolres = False
 
         if boolres!=True:
-            exp()
+            raise Exception('List of tokens is expected')
+            
         return boolres
 
 class Tokenizer(BaseTokenizer):
