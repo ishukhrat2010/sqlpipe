@@ -9,7 +9,7 @@ TT_DOUBLE_QUOTED = 'TT_D_QUOTED'  # a token between double quotes
 TT_COMMENT = 'TT_COMMENT'         # a token between comment sign and end of line
 TT_END_OF_STATEMENT = 'TT_EOS'    # token is the standard sql stament terminator
 
-# this function replaces \t \r with space in the string
+# this function replaces \t \r with the spaces
 def clean_spaces(strValue):
     aValue = str(strValue).replace('\t', ' ')
     aValue = str(aValue).replace('\r', ' ')
