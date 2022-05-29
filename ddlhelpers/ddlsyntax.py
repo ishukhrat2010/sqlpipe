@@ -48,7 +48,7 @@ class StandardDelimiters:
 class SyntaxRules(StandardDelimiters):
 
     def __init__(self):
-        BaseDelimiters.__init__(self)
+        StandardDelimiters.__init__(self)
         self._delimiter_metadata = {}
         self.init_delimiters()
 
