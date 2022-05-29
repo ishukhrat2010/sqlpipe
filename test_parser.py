@@ -17,10 +17,10 @@ def do_test():
         print(x)
 
     myblocks = fp._tokenizer.split_tokens(
-        'type', TT_END_OF_STATEMENT)
+        'type', TT_END_OF_STATEMENT, True)
     for xx in myblocks:
         print('----------------------------------')
-        if str(xx[0].value).upper() == 'CREATE' and str(xx[1].value).upper() == 'TABLE':
+        if str(xx.items[0].value).upper() == 'CREATE' and str(xx.items[1].value).upper() == 'TABLE':
             myObj = SQLObject.from_tokens(xx)
             print(type(myObj))
             for y in xx:

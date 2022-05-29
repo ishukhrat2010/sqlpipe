@@ -207,7 +207,21 @@ class TokenChain:
 
     def __init__(self, tokens: list=[]):
         self._tokens= tokens
+        self._index = 0
     
+    def __len__(self):
+        return len(self._tokens)
+
+    def __next__(self):
+        if self._index+1>=len(self._tokens):
+            raise StopIteration()
+        current = self._tokens[self._index]
+        self._index +=1
+        return current
+
+    def __iter__(self):
+        return self
+
     @property
     def items(self):
         return self._tokens
