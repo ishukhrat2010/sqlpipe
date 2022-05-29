@@ -52,6 +52,7 @@ class SyntaxRules(StandardDelimiters):
         self._delimiter_metadata = {}
         self.init_delimiters()
 
+
     # Create dictionary for delimiter attributes, can be overriden in the successor class
     def _delim_attr( self, delim, exclude=False):
         if delim == None:
@@ -61,12 +62,14 @@ class SyntaxRules(StandardDelimiters):
                           "exclude": exclude}        # exclude delimiter value from parsing result
             return delim_dict
 
+
     # set delimiter's  metadata
     def _dlm(self, delim, exclude=False):
 
         md = self._delim_attr(delim, exclude)
         if md != None:
             self._delimiter_metadata[delim] = md
+
 
     def init_delimiters(self):
         dc = self._std_delims
@@ -90,6 +93,7 @@ class SyntaxRules(StandardDelimiters):
         self._dlm(dc[DL_SINGLE_QUOTE])
         self._dlm(dc[DL_DOUBLE_QUOTE])
 
+
     # return maximum length of delimiters in collection
     def _max_delim_size(self):
         mx = 0
@@ -97,6 +101,7 @@ class SyntaxRules(StandardDelimiters):
             if v['length'] > mx:
                 mx = v['length']
         return mx
+
 
     # def convert_tab_to_delimiter(self):
     #    return True
