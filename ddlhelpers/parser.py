@@ -88,7 +88,7 @@ class BaseTokenizer(SyntaxRules):
         if expectedDelims != None:
             searchDelims = expectedDelims
         else:
-            searchDelims = self._delimiters
+            searchDelims = self._delimiter_metadata
         for dl in searchDelims:
             idx = str(aLine).find(dl)
             if idx == 0:  # delimiter is at the very beginning of the string
@@ -111,7 +111,7 @@ class BaseTokenizer(SyntaxRules):
         # returns delimiter definition
         def single_delim_definition(aDelim, aExclude=False):
             result = {}
-            sd = self._delim_collection[aDelim]
+            sd = self._std_delims[aDelim]
             result[sd] = {'length': len(sd), 'exclude': aExclude}
             return result
 
@@ -140,13 +140,13 @@ class BaseTokenizer(SyntaxRules):
                 chr_ofs += pos
                 oldPos = chr_ofs+1
 
-                if dl == self._delim_collection[DL_COMMENT]:
+                if dl == self._std_delims[DL_COMMENT]:
                     # switch to 'comment' mode;
                     # from now scan for newline delimiter in order to switch back to 'plain' mode
                     expectedDelims = single_delim_definition(DL_NEWLINE, True)
                     curTokenType = TT_COMMENT
 
-                elif dl == self._delim_collection[DL_SINGLE_QUOTE]:
+                elif dl == self._std_delims[DL_SINGLE_QUOTE]:
                     if curTokenType == TT_PLAIN:
                         # switch to block 'string literal' mode (single quoted);
                         # from now scan for another single quote to switch back to 'plain' mode
@@ -157,7 +157,7 @@ class BaseTokenizer(SyntaxRules):
                         # switch back to 'plain' mode
                         expectedDelims = None
 
-                elif dl == self._delim_collection[DL_DOUBLE_QUOTE]:
+                elif dl == self._std_delims[DL_DOUBLE_QUOTE]:
                     if curTokenType == TT_PLAIN:
                         # switch to block 'string literal' mode (double quoted);
                         # from now scan for another double quote to switch back to 'plain' mode
@@ -169,25 +169,25 @@ class BaseTokenizer(SyntaxRules):
                         expectedDelims = None
 
                 if dl_data['exclude'] == False:
-                    if (dl == self._delim_collection[DL_SEMICOLON]) and (curTokenType == TT_PLAIN):
+                    if (dl == self._std_delims[DL_SEMICOLON]) and (curTokenType == TT_PLAIN):
                         ctt = TT_END_OF_STATEMENT
                     else:
                         ctt = curTokenType
                     yield(_token(dl, line_no, oldPos, ctt))
                 chr_ofs += dl_data['length']
 
-                if (dl == self._delim_collection[DL_NEWLINE]) and (curTokenType in [TT_PLAIN, TT_COMMENT]):
+                if (dl == self._std_delims[DL_NEWLINE]) and (curTokenType in [TT_PLAIN, TT_COMMENT]):
                     line_no += 1
                     line_ofs += chr_ofs
                     chr_ofs = 0
                     curTokenType = TT_PLAIN
                     expectedDelims = None
 
-                elif dl == self._delim_collection[DL_SINGLE_QUOTE] and expectedDelims == None:
+                elif dl == self._std_delims[DL_SINGLE_QUOTE] and expectedDelims == None:
                     # switch back to 'plain' mode from single quoted
                     curTokenType = TT_PLAIN
 
-                elif dl == self._delim_collection[DL_DOUBLE_QUOTE] and expectedDelims == None:
+                elif dl == self._std_delims[DL_DOUBLE_QUOTE] and expectedDelims == None:
                     # switch back to 'plain' mode from double quoted
                     curTokenType = TT_PLAIN
 
