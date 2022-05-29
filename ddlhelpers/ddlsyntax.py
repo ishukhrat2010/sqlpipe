@@ -93,7 +93,7 @@ class SyntaxRules(StandardDelimiters):
     # return maximum length of delimiters in collection
     def _max_delim_size(self):
         mx = 0
-        for v in self._delimiters.values():
+        for v in self._delimiter_metadata.values():
             if v['length'] > mx:
                 mx = v['length']
         return mx
