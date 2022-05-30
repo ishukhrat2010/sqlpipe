@@ -1,3 +1,4 @@
+from ddlhelpers.ddlsyntax import *
 
 class SQLObject:
     __verb__ = ''
@@ -46,78 +47,14 @@ class SQLObject:
         return True
 
 
-class SQLSchema(SQLObject):
-    pass
+def supported_object_types():
+    return ['DATABASE', 'TABLE', 'VIEW', 'FUNCTION', 'USER']
 
-
-class SQLTable(SQLObject):
-
-    @property
-    def object_type(self):
-        return 'table'
-
-    @classmethod
-    def init_from_tokens(cls, aTokens):
-        return cls()
-
-    def __repr__(self):
-        return "SQL Table"
-
-
-class SQLView(SQLObject):
-    pass
-
-
-class SQLMaterializedView(SQLObject):
-    pass
-
-
-class SQLFunction(SQLObject):
-    pass
-
-
-class SQLStoredProc(SQLObject):
-    pass
-
-
-class SQLObjectFabric():
-
-    @staticmethod
-    def create_sql_object(aTokens):
-
-        def identify_class():
-            result = None
-            tokenList = aTokens[1:]
-            for t in tokenList:
-                idx = tokenList.index(t)
-                curToken = str(t.value).upper()
-                nextToken = str(tokenList[idx+1].value).upper()
-                if curToken == 'SCHEMA':
-                    result = SQLSchema
-
-                elif curToken == 'TABLE':
-                    result = SQLTable
-
-                elif curToken == 'VIEW':
-                    result = SQLView
-
-                elif curToken == 'MATERIALIZED' and nextToken == 'VIEW':
-                    result = SQLMaterializedView
-
-                elif curToken == 'FUNCTION':
-                    result = SQLFunction
-
-                elif curToken == 'STORED' and nextToken == 'PROCEDURE':
-                    result = SQLStoredProc
-
-                if result != None:
-                    break
-
-            return result
-
-        verb = str(aTokens[0].value).upper()
-        objectClass = identify_class()
-        if objectClass != None:
-            objectClass.__verb__ = verb
-            return objectClass
-        return None
+def getSQLObject(token_chain):
+    obj=None
+    plain_tokens = token_chain.copy([], [TT_COMMENT])
+    if  str(plain_tokens.items[0].value).upper() == 'CREATE':
+        objName = str(plain_tokens.items[1].value)
+        if objName.upper() in supported_object_types():
+            obj = type('SQLObject'+objName.capitalize(), (SQLObject,), {})
+    return obj

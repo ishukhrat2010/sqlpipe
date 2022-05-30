@@ -1,5 +1,5 @@
 from ddlhelpers.parser import *
-from ddlhelpers.sqlobjects import SQLObject
+from ddlhelpers.sqlobjects import SQLObject, getSQLObject
 
 
 fName = '/Users/shawn.ismailov/Documents/projects/dbl-bigdata/BigData/SQL_Redshift/deepThought/DDL/table/gold/dim_district_dates.sql'
@@ -20,16 +20,10 @@ def do_test():
         'type', TT_END_OF_STATEMENT, True)
     for xx in myblocks:
         print('----------------------------------')
-        if str(xx.items[0].value).upper() == 'CREATE' and str(xx.items[1].value).upper() == 'TABLE':
-            myObj = SQLObject.from_tokens(xx)
-            print(type(myObj))
-            for y in xx:
-                print(y.value)
-        else:
-            for y in xx:
-                print(y.value)
+
+        myObj = getSQLObject(xx)
+        print(myObj)
 
 
 if __name__ == "__main__":
     do_test()
-

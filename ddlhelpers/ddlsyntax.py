@@ -18,6 +18,13 @@ DL_CURLY_BRACE_CLOSE = 'CBC'
 DL_SQUARE_BRACE_OPEN = 'SQO'
 DL_SQUARE_BRACE_CLOSE = 'SQC'
 
+# Token types
+TT_PLAIN = 'TT_PLAIN'             # any continuous alpha-numeric sequence. Also includes braces, signs, etc.
+TT_SINGLE_QUOTED = 'TT_S_QUOTED'  # a token between single quotes
+TT_DOUBLE_QUOTED = 'TT_D_QUOTED'  # a token between double quotes
+TT_COMMENT = 'TT_COMMENT'         # a token between comment sign and end of line, including comment sign
+TT_END_OF_STATEMENT = 'TT_EOS'    # standard sql stament terminator
+
 
 class StandardDelimiters:
     def __init__(self):
