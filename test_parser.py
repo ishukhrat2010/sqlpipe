@@ -19,7 +19,7 @@ def do_test():
     myblocks = fp._tokenizer.split_tokens(
         'type', TT_END_OF_STATEMENT, True)
 
-    myFabric = SQLObjectFabric('ANSI-2000')
+    myFabric = SQLObjectFabric('ANSI-92')
 
     for xx in myblocks:
         print('----------------------------------')
