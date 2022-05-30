@@ -262,9 +262,9 @@ class TokenChain:
             self._tokens = tokens.copy()
 
     # Split chain into few chains
-    #   tKey   - name of the token property to use as a delimiter
-    #   tValue - value of the token property to use as a delimiter
-    #   includeSplitter - include splitter into result
+    #   tKey   - name of the token property to use as a split condition
+    #   tValue - value of the token property to use as a delimiter value
+    #   includeSplitter - include splitter token into result
     def split(self, tKey, tvalue, includeSplitter=False):
         result = []
         indexList = [self._tokens.index(x)
