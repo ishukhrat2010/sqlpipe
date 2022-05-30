@@ -38,7 +38,7 @@ class SQLObjectFabric():
 
     def _init_metadata(self):
         self._gallery.clear()
-        omd=_obj_metadata
+        omd=self._obj_metadata
 
         self._gallery.append(omd('Database',   ['DATABASE']))
 
@@ -54,7 +54,7 @@ class SQLObjectFabric():
         self._gallery.append(omd('Function',   ['FUNCTION']))
         self._gallery.append(omd('StoredProc', ['STORED', 'PROCEDURE']))
 
-    def getSQLObject(token_chain):
+    def getSQLObject(self, token_chain):
         obj=None
         objName=''
         # let's get rid of comments

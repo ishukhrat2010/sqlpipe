@@ -1,5 +1,5 @@
 from ddlhelpers.parser import *
-from ddlhelpers.sqlobjects import SQLObject, getSQLObject
+from ddlhelpers.sqlobjects import SQLObjectFabric
 
 
 fName = '/Users/shawn.ismailov/Documents/projects/dbl-bigdata/BigData/SQL_Redshift/deepThought/DDL/table/gold/dim_district_dates.sql'
@@ -18,10 +18,13 @@ def do_test():
 
     myblocks = fp._tokenizer.split_tokens(
         'type', TT_END_OF_STATEMENT, True)
+
+    myFabric = SQLObjectFabric('ANSI-2000')
+
     for xx in myblocks:
         print('----------------------------------')
 
-        myObj = getSQLObject(xx)
+        myObj = myFabric.getSQLObject(xx)
         print(myObj)
 
 
