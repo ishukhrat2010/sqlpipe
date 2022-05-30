@@ -6,8 +6,8 @@
 ## Create meta-class SQLObjectFabric
 ## Combine sequential tokens of the same type (e.g. comments) - TO DO
 
-## Split token chains into separate statements by statement delimiter - TO DO
+## Split token chains into separate statements by statement delimiter - done
 
-## Process token chain (the statement) to produce SQL object
+## Process token chain (the statement) to produce SQL object - in progress
 
 ## Create function token_chain.tostring() to return string value of token - done
