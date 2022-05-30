@@ -309,6 +309,30 @@ class TokenChain:
             raise Exception('List of tokens is expected')
             
         return boolres
+    
+    def tostring(self):
+        strResult=''
+        strLine = ''
+        lineNumber = -1
+
+        for x in self._tokens:
+            if lineNumber < 0:
+                lineNumber=x.line
+            
+            while lineNumber < x.line:
+                strResult = strResult + strLine + '\n'
+                strLine = ''
+                lineNumber+=1
+
+
+            if len(strLine)<x.position:
+                strLine = strLine.ljust(x.position-1, ' ')
+            strLine+=x.value
+
+        strResult+=strLine
+
+        return strResult
+            
 
 class Tokenizer(BaseTokenizer):
 

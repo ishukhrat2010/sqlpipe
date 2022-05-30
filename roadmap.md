@@ -10,4 +10,4 @@
 
 ## Process token chain (the statement) to produce SQL object
 
-## Create function token_chain.tostring() to return string value of token
+## Create function token_chain.tostring() to return string value of token - done
