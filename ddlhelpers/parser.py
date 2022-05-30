@@ -3,11 +3,11 @@ import ddlhelpers.sqlobjects
 
 
 # Token types
-TT_PLAIN = 'TT_PLAIN'             # any word, either reserved or not
+TT_PLAIN = 'TT_PLAIN'             # any continuous alpha-numeric sequence. Also includes braces, signs, etc.
 TT_SINGLE_QUOTED = 'TT_S_QUOTED'  # a token between single quotes
 TT_DOUBLE_QUOTED = 'TT_D_QUOTED'  # a token between double quotes
-TT_COMMENT = 'TT_COMMENT'         # a token between comment sign and end of line
-TT_END_OF_STATEMENT = 'TT_EOS'    # token is the standard sql stament terminator
+TT_COMMENT = 'TT_COMMENT'         # a token between comment sign and end of line, including comment sign
+TT_END_OF_STATEMENT = 'TT_EOS'    # standard sql stament terminator
 
 # this function replaces \t \r with the spaces
 def clean_spaces(strValue):
@@ -105,6 +105,7 @@ class BaseTokenizer(SyntaxRules):
         return (idx, delim, delim_data)
 
     # iterator function, produces next token from the content
+    # This is one of the core functions responsible for text parsing
     def gen_token(self, strValue):
         max_buf = self._max_delim_size()
 
