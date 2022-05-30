@@ -67,14 +67,14 @@ class SQLObjectFabric():
                 descriptor_found = True
                 # Check if token(s) match current object type descriptor(s)
                 for i in range(0, x['descriptor_count']):
-                    if str(plain_tokens.items[i+1].value).upper!=str(x['descriptors'][i]).upper():
+                    if str(plain_tokens.items[i+1].value).upper()!=str(x['descriptors'][i]).upper():
                         descriptor_found = False
                         break
 
                 if descriptor_found:
                     objName = x['object_type']
                     obj = type('SQLObject'+objName, (SQLObject,), {})(self._dialect)
-                    obj._tokenchain = token_chain
+                    obj._tokenchain = token_chain # copy ?
                     break
             
         return obj
