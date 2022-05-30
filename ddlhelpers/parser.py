@@ -80,6 +80,7 @@ class BaseTokenizer(SyntaxRules):
         self._content = content
 
     # Searches for delimiters and returns the index of the leftmost delimiter
+    # This function uses default delimiters unless expectedDelims passed to the function
     def _contains_delimiter(self, aLine, expectedDelims=None):
         idx = -1
         delim = None
