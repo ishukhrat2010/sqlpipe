@@ -8,6 +8,6 @@
 
 ## Split token chains into separate statements by statement delimiter - done
 
-## Process token chain (the statement) to produce SQL object - in progress
+## Process token chain (the statement) to produce abstract SQL object - done
 
 ## Create function token_chain.tostring() to return string value of token - done
