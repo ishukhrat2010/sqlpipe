@@ -16,7 +16,7 @@ The purpose of the project is to create a CI tool for SQL database deployment. T
 
 ### Scenario A (pessimistic approach)
 The application considers current state of database as unknown and scans database structure every time.   
-The application receives git commit reference to the repo with sql-scripts, connects to RDBMS and analyses differences between DDLs in the repo and what is found in database. As a result of the analysis, a sql-script is generated to create, alter or drop objects in database so that it mirrors the repository. 
+The application receives git commit reference to the repo with sql-scripts, connects to RDBMS and analyses differences between DDLs in the repo and what is found in database. As a result of the analysis, a sql-script is generated to create, alter or drop objects in database so that it mirrors the repository.  
 Pro: 
  - always brings DB to the repo state
  - idempotent 
