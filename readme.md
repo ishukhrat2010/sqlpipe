@@ -8,9 +8,30 @@ The purpose of the project is to create a CI tool for SQL database deployment. T
 1. Multiple SQL dialects (or RDMBS types) are supported. E.g. MySQL, Postgress, Redshft, MS Transact-SQL, SQL ANSI-2000, etc.
 2. git protocol support
 3. Generated scripts are "data-loss safe"
-4. Cloud-native
+4. Cloud-aware
 5. Best security practices
-6.  - - - 
+
 
 ## High-level implementation logic
-(placeholder)
+
+### Scenario A (pessimistic approach)
+The application considers current state of database as unknown and scans database structure every time.   
+The application receives git commit reference to the repo with sql-scripts, connects to RDBMS and analyses differences between DDLs in the repo and what is found in database. As a result of the analysis, a sql-script is generated to create, alter or drop objects in database so that it mirrors the repository. 
+Pro: 
+ - always brings DB to the repo state
+ - idempotent 
+ - don't need to store DB meta-data
+Con:
+ - scans DB everytime (time consuming)
+ - 'parallel' deployment on the same DB is impossible (TBD)
+
+
+### Scenario B (ultra-optimistic approach)
+The application receives git commit reference and generates migration scripts only for those sql-objects that were changed by commit. 
+Pro:
+ - parallel deployment of non-overlapping pieces
+ - faster, doesn't spend time on untouched objects
+Con:
+ - Complex diff-algorythm
+
+### Scenario C ()
