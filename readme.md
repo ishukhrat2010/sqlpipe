@@ -21,6 +21,7 @@ Pro:
  - always brings DB to the repo state
  - idempotent 
  - don't need to store DB meta-data  
+  
 Con:
  - scans DB everytime (time consuming)
  - 'parallel' deployment on the same DB is impossible (TBD)
