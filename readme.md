@@ -28,10 +28,11 @@ Con:
 
 
 ### Scenario B (ultra-optimistic approach)
-The application receives git commit reference and generates migration scripts only for those sql-objects that were changed by commit. 
+The application receives git commit reference and generates migration scripts only for those sql-objects that were changed by commit.  
 Pro:
  - parallel deployment of non-overlapping pieces
  - faster, doesn't spend time on untouched objects
+  
 Con:
  - Complex diff-algorythm
 
